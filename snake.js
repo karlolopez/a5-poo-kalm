@@ -1,4 +1,4 @@
-function Snake() {
+function Snake(isSecond) {
   this.x = 0;
   this.y = 0;
   this.xspeed = 1;
@@ -23,7 +23,7 @@ function Snake() {
     }
   }
 
-  this.update = function() {
+  this.update = function(isMirror) {
     if (this.total === this.tail.length) {
       for (var i = 0; i < this.tail.length - 1; i++) {
         this.tail[i] = this.tail[i+1]
@@ -32,11 +32,19 @@ function Snake() {
     this.tail[this.total-1] = createVector(this.x, this.y);
 
     this.x = this.x + this.xspeed*scayle;
-    this.y = this.y + this.yspeed*scayle;
-
+    this.y = this.y + this.yspeed*scayle;  
     this.x = constrain(this.x, 0, width-scayle);
     this.y = constrain(this.y, 0, height-scayle);
+    
   }
+
+  //La función original para cuando la víbora come, verifica que la distancia de la comida a la víbora
+  //sea de cero, pero hace falta crear una función que FORCE la acción de comer para la segunda víbora
+
+  this.forceEat = function(){
+    this.total ++;
+  }
+
 
   this.eat = function(pos) {
     var distance = dist(this.x, this.y, pos.x, pos.y);
@@ -49,7 +57,12 @@ function Snake() {
   }
 
   this.show = function() {
-    fill(255);
+    if(isSecond){
+      fill(255, 204, 100);
+    }else{
+      fill('red');
+    }
+    
     for (var i = 0; i < this.tail.length; i++) {
       rect(this.tail[i].x, this.tail[i].y, scayle, scayle);
     }
